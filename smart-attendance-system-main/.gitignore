@@ -18,8 +18,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Database
-db.sqlite3
 
 # Model files
 face_model.yml
