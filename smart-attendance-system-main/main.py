@@ -77,7 +77,7 @@ def run_face_recognition():
     attendance_flash = {}  # {name: timestamp} for green flash overlay
     
     # Track model file modification time for auto-reload
-    model_file = os.path.join("face_model.yml")
+    model_file = os.path.join("face_encodings.pkl")
     if os.path.exists(model_file):
         last_model_mtime = os.path.getmtime(model_file)
     

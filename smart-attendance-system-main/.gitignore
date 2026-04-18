@@ -22,3 +22,7 @@ Thumbs.db
 # Model files
 face_model.yml
 face_labels.pkl
+face_encodings.pkl
+
+# Augmented training data (generated)
+known_faces_augmented/

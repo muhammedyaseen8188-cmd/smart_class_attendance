@@ -3,6 +3,9 @@ Views for the Attendance System
 """
 
 import os
+import subprocess
+import sys
+import threading
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -410,15 +413,34 @@ def upload_photo(request):
             
             # Retrain the face recognition model with all known faces
             _retrain_face_model()
+
+            # Also run augmentation + training scripts in background
+            def retrain_model_background():
+                base_dir = str(settings.BASE_DIR)
+                python_exe = sys.executable
+                subprocess.run(
+                    [python_exe, os.path.join(base_dir, 'augment_faces.py')],
+                    cwd=base_dir,
+                    capture_output=True,
+                )
+                subprocess.run(
+                    [python_exe, os.path.join(base_dir, 'train_model.py')],
+                    cwd=base_dir,
+                    capture_output=True,
+                )
+
+            thread = threading.Thread(target=retrain_model_background)
+            thread.daemon = True
+            thread.start()
             
-            messages.success(request, f'{photo_type.title()} photo uploaded successfully!')
+            messages.success(request, f'{photo_type.title()} photo uploaded successfully! Model retraining...')
             
             # Return JSON response for AJAX calls
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
                     'success': True,
                     'photo_type': photo_type,
-                    'message': f'{photo_type.title()} photo uploaded successfully!'
+                    'message': f'{photo_type.title()} photo uploaded successfully! Model retraining...'
                 })
         else:
             messages.error(request, 'No photo file received')
