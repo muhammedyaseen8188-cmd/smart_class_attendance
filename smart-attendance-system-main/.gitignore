@@ -1,0 +1,26 @@
+# Virtual Environments
+venv/
+env/
+.venv/
+.env/
+
+# Python Compilation Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# IDE Settings
+.vscode/
+.idea/
+
+# Database
+db.sqlite3
+
+# Model files
+face_model.yml
+face_labels.pkl

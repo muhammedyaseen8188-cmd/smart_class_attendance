@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Teacher Registration - Attendance System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-5 col-lg-4">
+        <div class="card">
+            <div class="card-header text-center bg-success text-white">
+                <h3 class="mb-0"><i class="bi bi-person-plus"></i></h3>
+                <h4 class="mb-0">Teacher Registration</h4>
+                <p class="mb-0 opacity-75">Attendance System</p>
+            </div>
+            <div class="card-body p-4">
+                <h5 class="text-center mb-4">Create Your Account</h5>
+                
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-circle"></i>
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% empty %}
+                        Please correct the errors below.
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-person"></i> Full Name</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                        <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-envelope"></i> Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-lock"></i> Password</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                        <div class="text-danger small mt-1">{{ form.password.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label"><i class="bi bi-lock-fill"></i> Confirm Password</label>
+                        {{ form.confirm_password }}
+                        {% if form.confirm_password.errors %}
+                        <div class="text-danger small mt-1">{{ form.confirm_password.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-person-plus"></i> Register
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3">
+                <span class="text-muted">Already have an account?</span>
+                <a href="{% url 'teacher_login' %}" class="text-success fw-bold">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
+                <br>
+                <a href="{% url 'student_register' %}" class="text-primary mt-2 d-inline-block">
+                    <i class="bi bi-mortarboard"></i> Register as Student
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
